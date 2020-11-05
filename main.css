@@ -1,0 +1,73 @@
+@font-face {
+  font-family: "IBMPlexSansKR-Regular";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Regular.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+* {
+  font-family: "IBMPlexSansKR-Regular";
+}
+html,
+body {
+  margin: 0;
+}
+/* nav */
+.nav {
+  background-color: skyblue;
+  width: 100%;
+  height: 60px;
+  opacity: 0.9;
+  position: relative;
+  z-index: 2;
+}
+.back-btn-wrapper {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+}
+.back-btn-wrapper > i {
+  font-size: 40px;
+  color: white;
+}
+
+/* main */
+.main {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+}
+.search-bar-wrapper {
+  position: relative;
+  top: 80px;
+  width: 90%;
+  height: 7vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+  background-color: white;
+  margin: 0 auto;
+  border-radius: 20px;
+  min-height: 40px;
+  box-shadow: 0 3px 6px 0 rgb(0, 0, 0, 0.1);
+}
+.search-bar:focus {
+  outline: none;
+}
+.search-bar-wrapper > .search-bar {
+  border-style: none;
+  width: 90%;
+  font-size: 20px;
+}
+.search-btn-wrapper > i {
+  font-size: 20px;
+  color: skyblue;
+}
+#map {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+}
