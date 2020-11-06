@@ -1,0 +1,64 @@
+@font-face {
+  font-family: "IBMPlexSansKR-Regular";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Regular.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+.info-math,
+.info-english,
+.info-music,
+.info-art,
+.info-essay,
+.info-etc {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 10px;
+  padding: 1px 3px;
+}
+.info_1,
+.info_2 {
+  margin-bottom: 3px;
+}
+.info-imgs-math,
+.info-imgs-english,
+.info-imgs-music,
+.info-imgs-art,
+.info-imgs-essay,
+.info-imgs-etc {
+  height: 30px;
+  width: 20px;
+}
+.info {
+  display: inline-block;
+  border-radius: 10px;
+  box-shadow: darkgray;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 99;
+  font-family: "IBMPlexSansKR-Regular";
+  font-size: 14px;
+}
+.info-art {
+  background-color: #ffafaf;
+}
+.info-music {
+  background-color: #ffc095;
+}
+.info-math {
+  background-color: #adb3ff;
+}
+.info-etc {
+  background-color: #a1ffc7;
+}
+.info-english {
+  background-color: #e58bf4;
+}
+.info-essay {
+  background-color: #81fcfc;
+}
+.info {
+  background-color: rgb(223, 221, 221, 0.7);
+  padding: 10px 10px;
+}
