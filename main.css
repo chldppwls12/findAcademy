@@ -72,9 +72,78 @@ body {
   height: 100vh;
 }
 
-/* info */
-/* .info {
-  z-index: 99;
+/* popup */
+.academy-popup {
+  width: 350px;
+}
+.academy-title {
+  font-weight: bold;
+  font-size: 18px;
+}
+.academy-img {
+  height: 60px;
+  width: 60px;
+}
+.academy-content {
+  display: flex;
+  align-items: center;
+  padding: 10px 10px;
+  background-color: white;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+.academy-img-wrapper {
+  margin-right: 20px;
+}
+.academy-process {
+  background-color: skyblue;
+  border-radius: 10px;
+  padding: 0 5px;
+}
+.academy-addr {
+  white-space: normal;
+  max-width: 350px;
+  margin: 10px 0;
+}
+.academy-title-wrapper {
+  padding: 5px 10px;
+  background-color: skyblue;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.fas-wrapper {
+  font-size: 20px;
+}
+.academy-popup:after {
+  content: "";
+  position: absolute;
+  left: 48%;
+  width: 22px;
+  height: 12px;
+  background: url("https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/vertex_white.png");
+}
+.close-btn {
+  font-size: 30px;
+}
+
+/* filter */
+.info-math,
+.info-english,
+.info-music,
+.info-art,
+.info-essay,
+.info-etc {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 10px;
+  padding: 1px 3px;
+}
+.info_1,
+.info_2 {
+  margin-bottom: 3px;
 }
 .info-imgs-math,
 .info-imgs-english,
@@ -82,6 +151,39 @@ body {
 .info-imgs-art,
 .info-imgs-essay,
 .info-imgs-etc {
-  height: 1px;
-  width: 1px;
-} */
+  height: 30px;
+  width: 20px;
+}
+.info {
+  display: inline-block;
+  border-radius: 10px;
+  box-shadow: darkgray;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 99;
+  font-family: "IBMPlexSansKR-Regular";
+  font-size: 14px;
+}
+.info-art {
+  background-color: #ffafaf;
+}
+.info-music {
+  background-color: #ffc095;
+}
+.info-math {
+  background-color: #adb3ff;
+}
+.info-etc {
+  background-color: #a1ffc7;
+}
+.info-english {
+  background-color: #e58bf4;
+}
+.info-essay {
+  background-color: #81fcfc;
+}
+.info {
+  background-color: rgb(223, 221, 221, 0.7);
+  padding: 10px 10px;
+}
