@@ -1,12 +1,18 @@
+let url_string = window.location.href;
+let url = new URL(url_string);
+let keyword = url.searchParams.get('keyword');
+
 /*지도 가져오기*/
 let container = document.querySelector('#map'); //지도를 담을 영역의 DOM 레퍼런스
     let options = { //지도를 생성할 때 필요한 기본 옵션
-        center: new kakao.maps.LatLng(37.2872912604, 126.9910303332), //지도의 중심좌표.
-        level: 3 //지도의 레벨(확대, 축소 정도)
+        center: new kakao.maps.LatLng(37.266165, 126.999649), //지도의 중심좌표.
+        level: 4 //지도의 레벨(확대, 축소 정도)
     };
-    console.log('지도생성')
-let map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 
+let map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+console.log('지도생성');
+
+map.setMaxLevel(6);
  
 const search_bar = document.querySelector(".search-bar");
 const search_btn = document.querySelector(".search-btn");
@@ -18,12 +24,15 @@ const art_btn = document.querySelector(".info-art");
 const essay_btn = document.querySelector(".info-essay");
 const etc_btn = document.querySelector(".info-etc");
 
+const back_btn = document.querySelector(".back-btn-wrapper");
+
 // 장소 검색 객체를 생성합니다
 let ps = new kakao.maps.services.Places(); 
 
 const apiUrl = "https://openapi.gg.go.kr/TninsttInstutM?KEY=9aa60a805f9041198337d6137cd6c761&type=json&pSize=1000&";
 const apiUrl2 = "https://openapi.gg.go.kr/TninsttInstutM?KEY=9aa60a805f9041198337d6137cd6c761&type=json&pIndex=2&pSize=1000&";
 const apiUrl3 = "https://openapi.gg.go.kr/TninsttInstutM?KEY=9aa60a805f9041198337d6137cd6c761&type=json&pIndex=3&pSize=1000&";
+
 
 /* eventListener */
 search_bar.addEventListener('keyup', (event) =>{
@@ -44,46 +53,42 @@ search_btn.addEventListener('click', () => {
     }
 });
 
-math_btn.addEventListener('click', () => {
-
-})
-english_btn.addEventListener('click', () => {
-    
-})
-art_btn.addEventListener('click', () => {
-    
-})
-etc_btn.addEventListener('click', () => {
-    
-})
-essay_btn.addEventListener('click', () => {
-    
-})
-music_btn.addEventListener('click', () => {
-    
-})
+back_btn.addEventListener('click', () => {
+    console.log('click');
+    let url = `${window.location.origin}/index.html`;
+    window.location = url;
+});
 
 
 
 let keywordSearch = (keyword)=> {
     ps.keywordSearch(keyword, keywordSearchCB);
+    // window.location = `${window.location.origin}${window.location.pathname}?keyword=${keyword}`;
 }
 
+//장소만 변경하기
 let keywordSearchCB = async (data, status, pagination) => {
     if (status === kakao.maps.services.Status.OK) {
         let center = new kakao.maps.LatLng(data[0].y, data[0].x);
         map.setCenter(center);
-        
-        let facilityData = await getData();
+    }
+}
 
-        console.log(facilityData);
+let getDataAndDrawMarker = async () => {
+    document.querySelector('.loader-wrapper').style.display = "flex";
+    
+    let facilityData = await getData().then((data) =>{
+        document.querySelector('.loader-wrapper').style.display = "none";
+        return data;
+    });
+    
+    console.log(facilityData);
 
     for(const i of facilityData){
         drawMaker(i);
     }
-
-    }
 }
+
 //전체 데이터 가져오기
 let getData = async() =>{
     let request_url = apiUrl;
@@ -105,6 +110,15 @@ let getData = async() =>{
     return resultAll;
 }
 
+//처음에 전체 데이터 불러오기
+if(keyword){
+    getDataAndDrawMarker();
+    search_bar.value = keyword;
+    keywordSearch(keyword);
+}else{
+    getDataAndDrawMarker();
+}
+
 let clickOverlay = null;
 
 let drawMaker = (facilityData) => {
@@ -117,7 +131,7 @@ let drawMaker = (facilityData) => {
         "etc": "./images/etc.png"
     }; 
     const imageSize = new kakao.maps.Size(64, 69);
-    const imageOption = {offset: new kakao.maps.Point(27, 69)};
+    const imageOption = {offset: new kakao.maps.Point(27, 75)};
     let imageSrc;
 
     let olContentClass;
@@ -126,35 +140,43 @@ let drawMaker = (facilityData) => {
     let olContentNum = facilityData.TELNO;
     let olContentImg;
 
+    let backgroundColor;
     
     if((facilityData.CRSE_CLASS_NM && facilityData.CRSE_CLASS_NM.includes("수학")) || facilityData.FACLT_NM && facilityData.FACLT_NM.includes("수학")){
         imageSrc = image.math;
         olContentImg = './images/pop_math.png';
         olContentClass = "수학";
-    }else if((facilityData.CRSE_CLASS_NM && facilityData.CRSE_CLASS_NM.includes("음악", "플룻", "피아노", "첼로")) || facilityData.FACLT_NM && facilityData.FACLT_NM.includes("음악")){
+        backgroundColor = "#adb3ff";
+    }
+    else if((facilityData.CRSE_CLASS_NM && facilityData.CRSE_CLASS_NM.includes("음악", "플룻", "피아노", "첼로")) || facilityData.FACLT_NM && facilityData.FACLT_NM.includes("음악")){
         imageSrc = image.music;
         olContentImg = './images/pop_music.png';
         olContentClass = "음악";
+        backgroundColor = "#ffc095";
     }
     else if((facilityData.CRSE_CLASS_NM && facilityData.CRSE_CLASS_NM.includes("영어", "외국어")) || facilityData.FACLT_NM && facilityData.FACLT_NM.includes("영어", "어학원", "잉글리쉬")){
         imageSrc = image.english;
         olContentImg = './images/pop_english.png';
         olContentClass = "영어";
+        backgroundColor = "#e58bf4";
     }
     else if((facilityData.CRSE_CLASS_NM && facilityData.CRSE_CLASS_NM.includes("미술")) || facilityData.FACLT_NM && facilityData.FACLT_NM.includes("미술")){
         imageSrc = image.art;
         olContentImg = './images/pop_art.png';
         olContentClass = "미술";
+        backgroundColor = "#ffafaf";
     }   
     else if((facilityData.CRSE_CLASS_NM && facilityData.CRSE_CLASS_NM.includes("논술")) || facilityData.FACLT_NM && facilityData.FACLT_NM.includes("논술")){
         imageSrc = image.essay;
         olContentImg = './images/pop_essay.png';
         olContentClass = "논술";
+        backgroundColor = "#81fcfc";
     }
     else{
         imageSrc = image.etc;
         olContentImg = './images/pop_etc.png';
         olContentClass = facilityData.CRSE_CLASS_NM;
+        backgroundColor = "#a1ffc7";
     }
     
     if(olContentClass == null){
@@ -213,6 +235,17 @@ let drawMaker = (facilityData) => {
     academy_num.className = 'academy-num';
     academy_num.innerHTML = olContentNum;
 
+    let findRoad_wrapper = document.createElement('a');
+    findRoad_wrapper.setAttribute("href", `https://map.kakao.com/link/to/${facilityData.FACLT_NM},${facilityData.REFINE_WGS84_LAT},${facilityData.REFINE_WGS84_LOGT}`);
+    findRoad_wrapper.className = "findRoad-wrapper";
+    
+    let findRoad = document.createElement('span');
+    findRoad.className = "findRoad";
+    findRoad.innerHTML = "길 찾기";
+
+    let arrow = document.createElement('i');
+    arrow.classList.add("fas", "fa-arrow-right", "arrow");
+
 
     academy_popup.appendChild(academy_title_wrapper);
     academy_title_wrapper.appendChild(academy_title);
@@ -228,11 +261,19 @@ let drawMaker = (facilityData) => {
     academy_info_wrapper.appendChild(academy_addr);
     academy_info_wrapper.appendChild(academy_num);
 
+    academy_info_wrapper.appendChild(findRoad_wrapper);
+    findRoad_wrapper.appendChild(findRoad);
+    findRoad_wrapper.appendChild(arrow);
+
+    academy_process.style.backgroundColor = backgroundColor;
+    academy_title_wrapper.style.backgroundColor = backgroundColor;
+    findRoad_wrapper.style.backgroundColor = backgroundColor;
+
 
     let overlay = new kakao.maps.CustomOverlay({
         content: academy_popup,
         map: map,
-        position:  new kakao.maps.LatLng(marker.getPosition().getLat(), marker.getPosition().getLng()),
+        position:  marker.getPosition(),
         xAnchor: 0.5, // 커스텀 오버레이의 x축 위치입니다. 1에 가까울수록 왼쪽에 위치합니다. 기본값은 0.5 입니다
         yAnchor: 1.4 // 커스텀 오버레이의 y축 위치입니다. 1에 가까울수록 위쪽에 위치합니다. 기본값은 0.5 입니다
     });
@@ -251,5 +292,7 @@ let drawMaker = (facilityData) => {
     close_btn.addEventListener('click', () =>{
         overlay.setMap(null);
     });
+
+    console.log('drawmaker완료')
 
 }
