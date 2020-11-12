@@ -25,11 +25,11 @@ body {
 
 .title-wrapper {
   text-align: center;
-  flex: 2;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   padding: 20px;
+  flex: 1;
 }
 .title-wrapper > * {
   margin: 0;
@@ -41,13 +41,6 @@ body {
 .title-info {
   font-size: 18px;
 }
-.find-wrapper {
-  width: 100%;
-  flex: 2;
-  display: flex;
-  justify-content: center;
-}
-
 .fas {
   margin-right: 5px;
 }
@@ -71,7 +64,6 @@ body {
   align-items: center;
   z-index: 3;
   background-color: white;
-  margin: 0 auto;
   border-radius: 20px;
   min-height: 40px;
   border: solid;
@@ -84,4 +76,10 @@ body {
   border-style: none;
   width: 90%;
   font-size: 20px;
+}
+.flex-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  flex: 1.3;
 }

@@ -33,6 +33,8 @@ const apiUrl = "https://openapi.gg.go.kr/TninsttInstutM?KEY=9aa60a805f9041198337
 const apiUrl2 = "https://openapi.gg.go.kr/TninsttInstutM?KEY=9aa60a805f9041198337d6137cd6c761&type=json&pIndex=2&pSize=1000&";
 const apiUrl3 = "https://openapi.gg.go.kr/TninsttInstutM?KEY=9aa60a805f9041198337d6137cd6c761&type=json&pIndex=3&pSize=1000&";
 
+//index에서 main으로 넘어오는지?
+let isFirst = true;
 
 /* eventListener */
 search_bar.addEventListener('keyup', (event) =>{
@@ -60,10 +62,8 @@ back_btn.addEventListener('click', () => {
 });
 
 
-
 let keywordSearch = (keyword)=> {
     ps.keywordSearch(keyword, keywordSearchCB);
-    // window.location = `${window.location.origin}${window.location.pathname}?keyword=${keyword}`;
 }
 
 //장소만 변경하기
@@ -71,6 +71,7 @@ let keywordSearchCB = async (data, status, pagination) => {
     if (status === kakao.maps.services.Status.OK) {
         let center = new kakao.maps.LatLng(data[0].y, data[0].x);
         map.setCenter(center);
+        isFirst = false;
     }
 }
 
@@ -89,6 +90,7 @@ let getDataAndDrawMarker = async () => {
     }
 }
 
+
 //전체 데이터 가져오기
 let getData = async() =>{
     let request_url = apiUrl;
@@ -106,7 +108,15 @@ let getData = async() =>{
     let resultAll = [];
     resultAll = result.TninsttInstutM[1].row.concat(result2.TninsttInstutM[1].row);
     resultAll = resultAll.concat(result3.TninsttInstutM[1].row);
-    
+
+
+    //forEach는 배열 각각의 요소들마다 주어진 함수를 한번씩 호출
+    //map은 배열 각각의 요소들마다 주어진 함수를 호출한 결과를 모아 새로운 배열을 반환
+    resultAll.forEach((element) =>{
+        if(element.REFINE_WGS84_LAT && element.REFINE_WGS84_LOGT){
+            let LatLngObj = {lat: element.REFINE_WGS84_LAT, lag: element.REFINE_WGS84_LOGT};
+        }
+    });
     return resultAll;
 }
 
@@ -118,6 +128,8 @@ if(keyword){
 }else{
     getDataAndDrawMarker();
 }
+
+
 
 let clickOverlay = null;
 
